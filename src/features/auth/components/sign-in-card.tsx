@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { useForm } from "react-hook-form";
@@ -20,24 +21,23 @@ import {
     FormItem
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
-import Link from "next/link";
 
-const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(1, "Required"),
-})
+import { loginSchema } from "@/features/auth/schemas";
+import { useLogin } from "@/features/auth/api/useLogin";
 
 export const SignInCard = () => {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const { mutate } = useLogin();
+
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: "",
         }
     });
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
-        console.log(values);
+    const onSubmit = (values: z.infer<typeof loginSchema>) => {
+        mutate({ json: values });
     }
 
     return (

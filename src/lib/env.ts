@@ -4,4 +4,5 @@ export const envKeys = {
     appwriteDatabaseId: process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
     appwriteEndpoint: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!,
     appwriteApiKey: process.env.NEXT_APPWRITE_KEY!,
+    appwriteCollectionWorkspacesId: process.env.NEXT_PUBLIC_APPWRITE_COLLECTIONS_WORKSPACES_ID!
 }

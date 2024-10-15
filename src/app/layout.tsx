@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
+
 import { cn } from "@/lib/utils";
 import { QueryProviders } from "@/components/query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Task Forge",
@@ -29,6 +31,7 @@ export default function RootLayout({
         )}
       >
         <QueryProviders>
+          <Toaster />
           {children}
         </QueryProviders>
       </body>

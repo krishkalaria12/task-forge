@@ -6,5 +6,6 @@ export const envKeys = {
     appwriteEndpoint: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!,
     appwriteApiKey: process.env.NEXT_APPWRITE_KEY!,
     appwriteCollectionWorkspacesId: process.env.NEXT_PUBLIC_APPWRITE_COLLECTIONS_WORKSPACES_ID!,
+    appwriteCollectionMembersId: process.env.NEXT_PUBLIC_APPWRITE_COLLECTIONS_MEMBERS_ID!,
     uploadthingApiKey: process.env.UPLOADTHING_TOKEN!,
 }

@@ -32,12 +32,14 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import "@uploadthing/react/styles.css";
 import { UploadButton } from "@/utils/uploadthing";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface CreateWorkspaceFormProps {
     onCancel?: () => void;
 };
 
 export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
+    const router = useRouter();
     const { mutate, isPending } = useCreateWorkspace();
 
     const form = useForm<z.infer<typeof createWorkSpaceSchema>>({
@@ -49,8 +51,10 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
 
     const onSubmit = async (values: z.infer<typeof createWorkSpaceSchema>) => {
         mutate({ json: values }, {
-            onSuccess: () => {
+            onSuccess: ({ data }) => {
                 form.reset();
+                // onCancel?.();
+                router.push(`/workspaces/${data.$id}`);
             }
         });
     };  

@@ -1,14 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { ImageIcon } from "lucide-react";
+import { toast } from "sonner";
 
 import { createWorkSpaceSchema } from "@/features/workspaces/schemas";
 import { useCreateWorkspace } from "@/features/workspaces/api/use-create-workspace";
+import { cn } from "@/lib/utils";
 
 import {
     Card,
@@ -31,8 +34,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 import "@uploadthing/react/styles.css";
 import { UploadButton } from "@/utils/uploadthing";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 interface CreateWorkspaceFormProps {
     onCancel?: () => void;
@@ -147,6 +148,7 @@ export const CreateWorkspaceForm = ({ onCancel }: CreateWorkspaceFormProps) => {
                                 variant={"secondary"}
                                 onClick={onCancel}
                                 disabled={isPending}
+                                className={cn(!onCancel && "invisible")}
                             >
                                 Cancel
                             </Button>

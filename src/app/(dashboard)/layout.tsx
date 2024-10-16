@@ -5,11 +5,11 @@ interface DashboardLayoutProps {
     children: React.ReactNode;
 }
 
-function DashboardLayout({children }: DashboardLayoutProps) {
+function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
         <div className="min-h-screen">
             <div className="flex w-full h-full">
-                <div className="fixed left-0 top-0 hidden overflow-y-auto h-full lg:block lg:w-[264px]">
+                <div className="fixed left-0 top-0 overflow-y-auto h-full lg:block lg:w-[264px]">
                     <Sidebar />
                 </div>
                 <div className="lg:pl-[264px] w-full">

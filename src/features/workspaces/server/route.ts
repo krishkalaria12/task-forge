@@ -8,6 +8,20 @@ import { envKeys } from "@/lib/env";
 import { createWorkSpaceSchema } from "@/features/workspaces/schemas";
 
 const app = new Hono()
+    .get(
+        "/",
+        sessionMiddleware,
+        async (c) => {
+            const databases = c.get("databases");
+
+            const workspaces = await databases.listDocuments(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionWorkspacesId,
+            );
+
+            return c.json({ data: workspaces });
+        }
+    )
     .post(
         "/",
         zValidator("json", createWorkSpaceSchema),

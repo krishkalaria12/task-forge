@@ -10,31 +10,13 @@ import { createWorkSpaceSchema } from "@/features/workspaces/schemas";
 const app = new Hono()
     .post(
         "/",
-        zValidator("form", createWorkSpaceSchema),
+        zValidator("json", createWorkSpaceSchema),
         sessionMiddleware,
         async (c) => {
             const databases = c.get("databases");
-            const storage = c.get("storage");
             const user = c.get("user");
 
-            const { name, image } = c.req.valid("form");
-
-            let uploadedImageUrl: string | undefined;
-
-            if(image instanceof File){
-                const file = await storage.createFile(
-                    envKeys.appwriteStorageId,
-                    ID.unique(),
-                    image
-                );
-
-                const arrayBuffer = await storage.getFilePreview(
-                    envKeys.appwriteStorageId,
-                    file.$id,
-                );
-
-                uploadedImageUrl = `data:image/png;base64,${Buffer.from(arrayBuffer).toString("base64")}`;
-            }
+            const { name, image } = c.req.valid("json");
 
             const workspace = await databases.createDocument(
                 envKeys.appwriteDatabaseId,
@@ -43,7 +25,7 @@ const app = new Hono()
                 {
                     name,
                     userId: user.$id,
-                    imageUrl: uploadedImageUrl,
+                    imageUrl: image,
                 }
             );
 

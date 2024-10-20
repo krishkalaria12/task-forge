@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferResponseType } from "hono";
 
@@ -10,7 +8,6 @@ type ResponseType = InferResponseType<typeof client.api.auth.logout["$post"]>;
 
 export const useLogout = () => {
     const queryClient = useQueryClient();
-    const router = useRouter();
 
     const mutation = useMutation<
         ResponseType,
@@ -27,7 +24,7 @@ export const useLogout = () => {
         },
         onSuccess: () => {
             toast.success("Logged out successfully");
-            router.refresh();
+            window.location.href = "/sign-in";
             queryClient.invalidateQueries({ queryKey: ["current"] });
             queryClient.invalidateQueries({ queryKey: ["workspaces"] });
         },

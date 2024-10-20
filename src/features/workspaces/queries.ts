@@ -1,25 +1,15 @@
-import { cookies } from "next/headers";
-
-import { Account, Client, Databases, Query } from "node-appwrite";
+import { Query } from "node-appwrite";
 
 import { getMember } from "@/features/members/utils";
-import { envKeys } from "@/lib/env";
-import { AUTH_COOKIE } from "@/features/auth/constants";
 import { WorkSpace } from "@/features/workspaces/types";
+
+import { envKeys } from "@/lib/env";
+import { createSessionClient } from "@/lib/appwrite";
 
 export const getWorkspaces = async () => {
     try {
-        const client = new Client()
-                .setEndpoint(envKeys.appwriteEndpoint)
-                .setProject(envKeys.appwriteProjectId);
-        
-        const session = await cookies().get(AUTH_COOKIE);
-    
-        if(!session) return { documents: [], total: 0 };
-    
-        client.setSession(session.value);
-        const databases = new Databases(client);
-        const account = new Account(client);
+        const { account, databases } = await createSessionClient();
+
         const user = await account.get();
 
         const members = await databases.listDocuments(
@@ -55,23 +45,10 @@ interface getWorkspaceProps {
     workspaceId: string;
 }
 
-interface getWorkspaceProps {
-    workspaceId: string;
-}
-
 export const getWorkspace = async ({ workspaceId }: getWorkspaceProps): Promise<WorkSpace | null> => {
     try {
-        const client = new Client()
-            .setEndpoint(envKeys.appwriteEndpoint)
-            .setProject(envKeys.appwriteProjectId);
-        
-        const session = await cookies().get(AUTH_COOKIE);
-    
-        if(!session) return null;
-    
-        client.setSession(session.value);
-        const databases = new Databases(client);
-        const account = new Account(client);
+        const { account, databases } = await createSessionClient();
+
         const user = await account.get();
 
         const member = await getMember({

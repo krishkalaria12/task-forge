@@ -5,9 +5,10 @@ import { ID, Query } from "node-appwrite";
 import { sessionMiddleware } from "@/lib/session-middleware";
 import { envKeys } from "@/lib/env";
 
-import { createWorkSpaceSchema } from "@/features/workspaces/schemas";
+import { createWorkSpaceSchema, updateWorkSpaceSchema } from "@/features/workspaces/schemas";
 import { MemberRole } from "@/features/members/types";
 import { generateInviteCode } from "@/utils/generate-invite-code";
+import { getMember } from "@/features/members/utils";
 
 const app = new Hono()
     .get(
@@ -75,6 +76,40 @@ const app = new Hono()
                     role: MemberRole.ADMIN
                 }
             )
+
+            return c.json({ data: workspace });
+        }
+    )
+    .patch(
+        "/:workspaceId",
+        sessionMiddleware,
+        zValidator("json", updateWorkSpaceSchema),
+        async (c) => {
+            const databases = c.get("databases");
+            const user = c.get("user");
+
+            const { workspaceId } = c.req.param();
+            const { name, image } = c.req.valid("json");
+
+            const member = await getMember({
+                databases,
+                workspaceId,
+                userId: user.$id
+            });
+
+            if (!member || member.role !== MemberRole.ADMIN) {
+                return c.json({ error: "Unauthorized" }, 401);
+            }
+
+            const workspace = await databases.updateDocument(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionWorkspacesId,
+                workspaceId,
+                {
+                    name,
+                    imageUrl: image,
+                }
+            );
 
             return c.json({ data: workspace });
         }

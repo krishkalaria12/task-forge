@@ -1,3 +1,5 @@
+import "server-only";
+
 import { Query } from "node-appwrite";
 
 import { getMember } from "@/features/members/utils";
@@ -66,6 +68,29 @@ export const getWorkspace = async ({ workspaceId }: getWorkspaceProps): Promise<
         );
     
         return workspace;
+    } catch (error) {
+        console.error("Error fetching workspace:", error);
+        return null;
+    }
+}
+
+interface getWorkspaceInfoProps {
+    workspaceId: string;
+}
+
+export const getWorkspaceInfo = async ({ workspaceId }: getWorkspaceInfoProps) => {
+    try {
+        const { databases } = await createSessionClient();
+
+        const workspace = await databases.getDocument<WorkSpace>(
+            envKeys.appwriteDatabaseId,
+            envKeys.appwriteCollectionWorkspacesId,
+            workspaceId
+        );
+    
+        return {
+            name: workspace.name,
+        };
     } catch (error) {
         console.error("Error fetching workspace:", error);
         return null;

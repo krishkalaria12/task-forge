@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
 
+import { CreateProjectModal } from "@/features/projects/components/create-project-modal";
 import { CreateWorkspaceModal } from "@/features/workspaces/components/create-workspace-modal";
 
 interface DashboardLayoutProps {
@@ -11,6 +12,7 @@ function DashboardLayout({ children }: DashboardLayoutProps) {
     return (
         <div className="min-h-screen">
             <CreateWorkspaceModal />
+            <CreateProjectModal />
             <div className="flex w-full h-full">
                 <div className="fixed left-0 top-0 overflow-y-auto h-full lg:block lg:w-[264px]">
                     <Sidebar />

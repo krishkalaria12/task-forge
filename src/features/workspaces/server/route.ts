@@ -208,11 +208,6 @@ const app = new Hono()
                 workspaceId,
             );
 
-            console.log(workspace.inviteCode, code);
-            console.log(workspace.inviteCode == code);
-            console.log(workspace.inviteCode === code);
-            
-
             if (workspace.inviteCode.trim() !== code.trim()) {
                 return c.json({ error: "Invalid invite code" }, 400);
             }

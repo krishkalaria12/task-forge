@@ -146,5 +146,38 @@ const app = new Hono()
             })
         }
     )
+    .post(
+        "/:workspaceId/reset-invite-code",
+        sessionMiddleware,
+        async (c) => {
+            const databases = c.get("databases");
+            const user = c.get("user");
+
+            const { workspaceId } = c.req.param();
+
+            const members = await getMember({
+                databases,
+                workspaceId,
+                userId: user.$id
+            });
+
+            if (!members || members.role !== MemberRole.ADMIN) {
+                return c.json({ error: "Unauthorized" }, 401);
+            }
+
+            const workspace = await databases.updateDocument(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionWorkspacesId,
+                workspaceId,
+                {
+                    inviteCode: generateInviteCode(6),
+                }
+            );
+
+            return c.json({
+                data: workspace
+            })
+        }
+    )
 
 export default app;

@@ -6,6 +6,7 @@ import { PencilIcon } from "lucide-react";
 import { getCurrent } from "@/features/auth/queries";
 import { getProject } from "@/features/projects/queries";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
+import TaskViewSwitcher from "@/features/tasks/components/task-view-switcher";
 
 import { Button } from "@/components/ui/button";
 
@@ -31,7 +32,7 @@ const ProjectIdPage = async ({
 
     return (
         <div className="flex flex-col gap-y-4">
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-between">
                 <div className="flex items-center gap-x-2">
                     <ProjectAvatar 
                         name={initialValues?.name}
@@ -55,6 +56,7 @@ const ProjectIdPage = async ({
                     </Button>
                 </div>
             </div>
+            <TaskViewSwitcher />
         </div>
     )
 }

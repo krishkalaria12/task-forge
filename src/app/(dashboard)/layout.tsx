@@ -14,7 +14,7 @@ function DashboardLayout({ children }: DashboardLayoutProps) {
             <CreateWorkspaceModal />
             <CreateProjectModal />
             <div className="flex w-full h-full">
-                <div className="fixed left-0 top-0 overflow-y-auto h-full lg:block lg:w-[264px]">
+                <div className="fixed left-0 top-0 overflow-y-auto hidden h-full lg:block lg:w-[264px]">
                     <Sidebar />
                 </div>
                 <div className="lg:pl-[264px] w-full">

@@ -5,12 +5,12 @@ import { client } from "@/lib/rpc";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-type ResponseType = InferResponseType<typeof client.api.workspaces[":workspaceId"]["$patch"], 200>;
-type RequestType = InferRequestType<typeof client.api.workspaces[":workspaceId"]["$patch"]>;
+type ResponseType = InferResponseType<typeof client.api.projects[":projectId"]["$patch"], 200>;
+type RequestType = InferRequestType<typeof client.api.projects[":projectId"]["$patch"]>;
 
-export const useUpdateWorkspace = () => {
+export const useUpdateProject = () => {
     const queryClient = useQueryClient();
-    const router =useRouter();
+    const router = useRouter();
 
     const mutation = useMutation<
         ResponseType,
@@ -18,22 +18,22 @@ export const useUpdateWorkspace = () => {
         RequestType
     >({
         mutationFn: async ({ json, param }) => {
-            const response = await client.api.workspaces[":workspaceId"]["$patch"]({ json, param });
+            const response = await client.api.projects[":projectId"]["$patch"]({ json, param });
             
             if (!response.ok) {
-                throw new Error("Failed to update workspace");
+                throw new Error("Failed to update project");
             }
 
             return await response.json();
         },
         onSuccess: ({ data }) => {
-            toast.success("Workspace updated");
+            toast.success("Project updated");
             router.refresh();
-            queryClient.invalidateQueries({ queryKey: ["workspaces"] });
-            queryClient.invalidateQueries({ queryKey: ["workspace" , data.$id] });
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            queryClient.invalidateQueries({ queryKey: ["project" , data.$id] });
         },
         onError: () => {
-            toast.error("Failed to updated workspace");
+            toast.error("Failed to updated project");
         }
     });
 

@@ -48,7 +48,7 @@ const ProjectIdPage = async ({
                         size={"sm"}
                         asChild
                     >
-                        <Link href={`/workspaces/${initialValues.workspaceId}/projects/${initialValues.projectId}/settings`}>
+                        <Link href={`/workspaces/${initialValues.workspaceId}/projects/${initialValues.$id}/settings`}>
                             <PencilIcon className="size-4 mr-2" />
                             Edit Project
                         </Link>

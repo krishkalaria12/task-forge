@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,7 +41,7 @@ interface CreateProjectFormProps {
 };
 
 export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
-    // const router = useRouter();
+    const router = useRouter();
     const workspaceId = useWorkSpaceId();
     const { mutate, isPending } = useCreateProject();
 
@@ -58,9 +58,9 @@ export const CreateProjectForm = ({ onCancel }: CreateProjectFormProps) => {
             workspaceId
         }
         mutate({ json: finalValues }, {
-            onSuccess: () => {
+            onSuccess: ({ data }) => {
                 form.reset();
-                // TODO: add project redirect
+                router.push(`/workspaces/${workspaceId}/projects/${data.$id}`)
             }
         });
     };  

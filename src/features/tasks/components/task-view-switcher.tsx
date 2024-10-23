@@ -14,6 +14,7 @@ import { DataKanban } from "@/features/tasks/components/data-kanban";
 import { useCreateTaskModal } from "@/features/tasks/hooks/use-create-task-modal";
 import { TaskStatus } from "@/features/tasks/types";
 import { useBulkUpdateTasks } from "@/features/tasks/api/use-bulk-update-task";
+import { DataCalendar } from "@/features/tasks/components/data-calendar";
 
 import { Button } from "@/components/ui/button"
 import { 
@@ -113,8 +114,8 @@ export const TaskViewSwitcher = () => {
                         <TabsContent value="kanban" className="mt-0">
                             <DataKanban onChange={onKanbanChange} data={tasks?.documents ?? []} />
                         </TabsContent>
-                        <TabsContent value="calendar" className="mt-0">
-                            Calendar
+                        <TabsContent value="calendar" className="mt-0 h-full pb-4">
+                            <DataCalendar data={tasks?.documents ?? []} />
                         </TabsContent>
                     </>
                 }

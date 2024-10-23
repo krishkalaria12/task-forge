@@ -9,7 +9,7 @@ import { createAdminClient } from "@/lib/appwrite";
 
 import { createTaskSchema } from "@/features/tasks/schemas";
 import { getMember } from "@/features/members/utils";
-import { TaskStatus } from "@/features/tasks/types";
+import { Task, TaskStatus } from "@/features/tasks/types";
 import { Project } from "@/features/projects/types";
 
 const app = new Hono()
@@ -76,7 +76,7 @@ const app = new Hono()
                 query.push(Query.search("name", search));
             }
 
-            const tasks = await databases.listDocuments(
+            const tasks = await databases.listDocuments<Task>(
                 envKeys.appwriteDatabaseId,
                 envKeys.appwriteCollectionTasksId,
                 query

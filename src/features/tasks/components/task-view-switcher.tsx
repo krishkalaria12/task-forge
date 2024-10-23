@@ -8,6 +8,8 @@ import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
 import { useWorkSpaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { DataFilters } from "@/features/tasks/components/data-filters";
 import { useTaskFilters } from "@/features/tasks/hooks/use-task-filters";
+import { DataTable } from "@/features/tasks/components/data-table";
+import { columns } from "@/features/tasks/components/columns";
 
 import { Button } from "@/components/ui/button"
 import { 
@@ -39,6 +41,7 @@ const TaskViewSwitcher = () => {
         projectId,
         status
     });
+
     const { open } = useCreateProjectModal();
 
     return (
@@ -84,7 +87,10 @@ const TaskViewSwitcher = () => {
                     ) : 
                     <>
                         <TabsContent value="table" className="mt-0">
-                            Data Table
+                            <DataTable 
+                                columns={columns}
+                                data={tasks?.documents ?? []}
+                            />
                         </TabsContent>
                         <TabsContent value="kanban" className="mt-0">
                             Kanban

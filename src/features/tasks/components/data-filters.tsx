@@ -74,7 +74,7 @@ export const DataFilters = ({
     if (isLoading) return null;
 
     return (
-        <div className="flex flex-col lg:flex-row gap-y-2">
+        <div className="filter-switcher">
             <Select 
                 defaultValue={status ?? undefined}
                 onValueChange={(value) => onStatusChange(value)}

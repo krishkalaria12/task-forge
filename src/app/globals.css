@@ -95,7 +95,18 @@ body {
   align-items: center;
 }
 
+.filter-switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
 @media (min-width: 1024px) {
+  .filter-switcher {
+    flex-direction: row;
+    align-items: center;
+  }
   .tabs-switcher {
     flex-direction: row;
     align-items: center;

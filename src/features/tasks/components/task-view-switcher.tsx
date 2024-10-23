@@ -1,4 +1,5 @@
 "use client";
+import { useCallback } from "react";
 
 import { Loader, PlusIcon } from "lucide-react"
 import { useQueryState } from "nuqs";
@@ -9,7 +10,10 @@ import { DataFilters } from "@/features/tasks/components/data-filters";
 import { useTaskFilters } from "@/features/tasks/hooks/use-task-filters";
 import { DataTable } from "@/features/tasks/components/data-table";
 import { columns } from "@/features/tasks/components/columns";
+import { DataKanban } from "@/features/tasks/components/data-kanban";
 import { useCreateTaskModal } from "@/features/tasks/hooks/use-create-task-modal";
+import { TaskStatus } from "@/features/tasks/types";
+import { useBulkUpdateTasks } from "@/features/tasks/api/use-bulk-update-task";
 
 import { Button } from "@/components/ui/button"
 import { 
@@ -30,7 +34,9 @@ export const TaskViewSwitcher = () => {
 
     const [view, setView] = useQueryState("task-view", {
         defaultValue: "table",
-    })
+    });
+
+    const { mutate: bulkUpdate } = useBulkUpdateTasks();
 
     const workspaceId = useWorkSpaceId();
 
@@ -43,6 +49,18 @@ export const TaskViewSwitcher = () => {
     });
 
     const { open } = useCreateTaskModal();
+
+    const onKanbanChange = useCallback((
+        tasks: { 
+            $id: string, 
+            status: TaskStatus, 
+            position: number 
+        }[]
+    ) => {
+        bulkUpdate({
+            json: { tasks }
+        })
+    }, [bulkUpdate]);
 
     return (
         <Tabs onValueChange={setView} value={view} className="flex-1 w-full border rounded-lg">
@@ -93,7 +111,7 @@ export const TaskViewSwitcher = () => {
                             />
                         </TabsContent>
                         <TabsContent value="kanban" className="mt-0">
-                            Kanban
+                            <DataKanban onChange={onKanbanChange} data={tasks?.documents ?? []} />
                         </TabsContent>
                         <TabsContent value="calendar" className="mt-0">
                             Calendar

@@ -25,7 +25,13 @@ import {
 } from "@/components/ui/tabs"
 import { DottedSeperator } from "@/components/dotted-seperator"
 
-export const TaskViewSwitcher = () => {
+interface TaskViewSwitcherProps {
+    hideProjectFilter?: boolean;
+}
+
+export const TaskViewSwitcher = ({
+    hideProjectFilter
+}: TaskViewSwitcherProps) => {
     const [{
         assigneeId,
         dueDate,
@@ -97,7 +103,7 @@ export const TaskViewSwitcher = () => {
                     </Button>
                 </div>
                 <DottedSeperator className="my-4" />
-                    <DataFilters />
+                    <DataFilters hideProjectFilter={hideProjectFilter} />
                 <DottedSeperator className="my-4" />
                 {isTasksLoading ? (
                     <div className="w-full border rounded-lg h-[200px] flex flex-col items-center justify-center">

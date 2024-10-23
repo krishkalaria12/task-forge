@@ -191,5 +191,144 @@ const app = new Hono()
             return c.json({ data: task });
         }
     )
+    .delete(
+        "/:taskId",
+        sessionMiddleware,
+        async (c) => {
+            const user = c.get("user");
+            const databases = c.get("databases");
+            const { taskId } = c.req.param();
+
+            const task = await databases.getDocument<Task>(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionTasksId,
+                taskId
+            );
+
+            const member = await getMember({
+                databases,
+                workspaceId: task.workspaceId,
+                userId: user.$id,
+            });
+
+            if (!member) {
+                return c.json({ error: "Unauthorized" }, 401);
+            }
+            
+            await databases.deleteDocument(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionTasksId,
+                taskId
+            );
+
+            return c.json({ data: { $id: task.$id } });
+        }
+    )
+    .patch(
+        "/:taskId",
+        sessionMiddleware,
+        zValidator("json", createTaskSchema.partial()),
+        async (c) => {
+            const user = c.get("user");
+            const databases = c.get("databases");
+
+            const {
+                name,
+                assigneeId,
+                dueDate,
+                projectId,
+                status,
+                description
+            } = c.req.valid("json");
+            const { taskId } = c.req.param();
+
+            const existingTask = await databases.getDocument<Task>(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionTasksId,
+                taskId
+            );
+
+            const member = await getMember({
+                databases,
+                workspaceId: existingTask.workspaceId,
+                userId: user.$id,
+            });
+
+            if (!member) {
+                return c.json({ error: "Unauthorized" }, 401);
+            }
+
+            const task = await databases.updateDocument(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionTasksId,
+                taskId,
+                {
+                    name,
+                    status,
+                    projectId,
+                    dueDate,
+                    assigneeId,
+                    description
+                }
+            );
+
+            return c.json({ data: task });
+        }
+    )
+    .get(
+        "/:taskId",
+        sessionMiddleware,
+        async (c) => {
+            const { taskId } = c.req.param();
+
+            const databases = c.get("databases");
+            const currentUser = c.get("user");
+            const { users } = await createAdminClient();
+
+            const task = await databases.getDocument<Task>(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionTasksId,
+                taskId
+            );
+
+            const currentMember = await getMember({
+                databases,
+                workspaceId: task.workspaceId,
+                userId: currentUser.$id,
+            });
+
+            if (!currentMember) {
+                return c.json({ error: "Unauthorized" }, 401);
+            }
+
+            const project = await databases.getDocument<Project>(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionProjectsId,
+                task.projectId
+            );
+
+            const member = await databases.getDocument(
+                envKeys.appwriteDatabaseId,
+                envKeys.appwriteCollectionMembersId,
+                task.assigneeId
+            );
+
+            const user = await users.get(member.userId);
+
+            const assignee = {
+                ...member,
+                name: user.name,
+                email: user.email,
+            };
+            
+            return c.json({ 
+                data: {
+                    ...task,
+                    project,
+                    assignee
+                }
+            });
+        }
+    )
 
 export default app;

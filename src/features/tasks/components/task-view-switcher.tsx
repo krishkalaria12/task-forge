@@ -3,13 +3,13 @@
 import { Loader, PlusIcon } from "lucide-react"
 import { useQueryState } from "nuqs";
 
-import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal"
 import { useGetTasks } from "@/features/tasks/api/use-get-tasks";
 import { useWorkSpaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 import { DataFilters } from "@/features/tasks/components/data-filters";
 import { useTaskFilters } from "@/features/tasks/hooks/use-task-filters";
 import { DataTable } from "@/features/tasks/components/data-table";
 import { columns } from "@/features/tasks/components/columns";
+import { useCreateTaskModal } from "@/features/tasks/hooks/use-create-task-modal";
 
 import { Button } from "@/components/ui/button"
 import { 
@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/tabs"
 import { DottedSeperator } from "@/components/dotted-seperator"
 
-const TaskViewSwitcher = () => {
+export const TaskViewSwitcher = () => {
     const [{
         assigneeId,
         dueDate,
@@ -42,7 +42,7 @@ const TaskViewSwitcher = () => {
         status
     });
 
-    const { open } = useCreateProjectModal();
+    const { open } = useCreateTaskModal();
 
     return (
         <Tabs onValueChange={setView} value={view} className="flex-1 w-full border rounded-lg">
@@ -104,5 +104,3 @@ const TaskViewSwitcher = () => {
         </Tabs>
     )
 }
-
-export default TaskViewSwitcher

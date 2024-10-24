@@ -75,7 +75,7 @@ const app = new Hono()
                 return c.json({ error: "Unauthorized" }, 401);
             }
 
-            const projects = await databases.listDocuments(
+            const projects = await databases.listDocuments<Project>(
                 envKeys.appwriteDatabaseId,
                 envKeys.appwriteCollectionProjectsId,
                 [
@@ -226,7 +226,7 @@ const app = new Hono()
 
             const thisMonthTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.greaterThanEqual("$createdAt", thisMonthStart.toISOString()),
@@ -236,7 +236,7 @@ const app = new Hono()
 
             const lastMonthTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.greaterThanEqual("$createdAt", lastMonthStart.toISOString()),
@@ -249,7 +249,7 @@ const app = new Hono()
 
             const thisMonthAssigneedTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.equal("assigneeId", member.$id),
@@ -260,7 +260,7 @@ const app = new Hono()
 
             const lastMonthAssigneedTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.equal("assigneeId", member.$id),
@@ -274,7 +274,7 @@ const app = new Hono()
 
             const thisMonthIncompleteTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.notEqual("status", TaskStatus.DONE),
@@ -285,7 +285,7 @@ const app = new Hono()
 
             const lastMonthIncompleteTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.notEqual("status", TaskStatus.DONE),
@@ -299,7 +299,7 @@ const app = new Hono()
 
             const thisMonthCompleteTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.equal("status", TaskStatus.DONE),
@@ -310,7 +310,7 @@ const app = new Hono()
 
             const lastMonthCompleteTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.notEqual("status", TaskStatus.DONE),
@@ -324,7 +324,7 @@ const app = new Hono()
 
             const thisMonthOverdueTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.notEqual("status", TaskStatus.DONE),
@@ -336,7 +336,7 @@ const app = new Hono()
 
             const lastMonthOverdueTasks = await databases.listDocuments(
                 envKeys.appwriteDatabaseId,
-                envKeys.appwriteCollectionProjectsId,
+                envKeys.appwriteCollectionTasksId,
                 [
                     Query.equal("projectId", projectId),
                     Query.notEqual("status", TaskStatus.DONE),

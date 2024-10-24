@@ -8,7 +8,7 @@ import { createAdminClient } from "@/lib/appwrite";
 import { envKeys } from "@/lib/env";
 
 import { getMember } from "@/features/members/utils";
-import { MemberRole } from "../types";
+import { Member, MemberRole } from "../types";
 
 const app = new Hono()
     .get(
@@ -32,7 +32,7 @@ const app = new Hono()
                 return c.json({ error: "Unauthorized" }, 401);
             };
 
-            const members = await databases.listDocuments(
+            const members = await databases.listDocuments<Member>(
                 envKeys.appwriteDatabaseId,
                 envKeys.appwriteCollectionMembersId,
                 [

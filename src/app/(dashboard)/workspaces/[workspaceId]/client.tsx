@@ -215,7 +215,7 @@ export const MemberList = ({ data, total, workspaceId }: MemberListProps) => {
                                             <p className="text-lg line-clamp-1 font-medium">
                                                 {member.name}
                                             </p>
-                                            <p className="text-lg line-clamp-1 text-muted-foreground">
+                                            <p className="text-sm truncate line-clamp-1 text-muted-foreground">
                                                 {member.email}
                                             </p>
                                         </div>

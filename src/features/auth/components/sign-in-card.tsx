@@ -7,6 +7,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { loginSchema } from "@/features/auth/schemas";
+import { useLogin } from "@/features/auth/api/useLogin";
+
+import { signUpWithGithub, signUpWithGoogle } from "@/lib/oauth";
+
 import { DottedSeperator } from "@/components/dotted-seperator"
 import { Button } from "@/components/ui/button";
 import {
@@ -24,8 +29,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input"
 
-import { loginSchema } from "@/features/auth/schemas";
-import { useLogin } from "@/features/auth/api/useLogin";
 
 export const SignInCard = () => {
     const { mutate, isPending } = useLogin();
@@ -101,11 +104,13 @@ export const SignInCard = () => {
                     disabled={isPending} 
                     variant={"secondary"} className="w-full" 
                     size={"lg"}
+                    onClick={() => signUpWithGoogle()}
                 >
                     <FcGoogle className="mr-2 size-5" />
                     Login with Google
                 </Button>
                 <Button 
+                    onClick={() => signUpWithGithub()}
                     disabled={isPending} 
                     variant={"secondary"} className="w-full" 
                     size={"lg"}

@@ -15,6 +15,7 @@ import { useCreateTaskModal } from "@/features/tasks/hooks/use-create-task-modal
 import { TaskStatus } from "@/features/tasks/types";
 import { useBulkUpdateTasks } from "@/features/tasks/api/use-bulk-update-task";
 import { DataCalendar } from "@/features/tasks/components/data-calendar";
+import { useProjectId } from "@/features/projects/hooks/use-projectId";
 
 import { Button } from "@/components/ui/button"
 import { 
@@ -46,12 +47,13 @@ export const TaskViewSwitcher = ({
     const { mutate: bulkUpdate } = useBulkUpdateTasks();
 
     const workspaceId = useWorkSpaceId();
+    const paramProjectId = useProjectId();
 
     const { data: tasks, isLoading: isTasksLoading } = useGetTasks({ 
         workspaceId,
         assigneeId,
         dueDate,
-        projectId,
+        projectId: paramProjectId || projectId,
         status
     });
 

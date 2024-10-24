@@ -1,16 +1,17 @@
+import { useRouter } from "next/navigation";
+
 import { MemberAvatar } from "@/features/members/components/member-avatar";
+import { Member } from "@/features/members/types";
 import { ProjectAvatar } from "@/features/projects/components/project-avatar";
 import { Project } from "@/features/projects/types";
 import { TaskStatus } from "@/features/tasks/types";
 import { useWorkSpaceId } from "@/features/workspaces/hooks/useWorkspaceId";
 
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 
 interface EventCardProps {
     title: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    assignee: any;
+    assignee: Member;
     project: Project;
     status: TaskStatus;
     id: string;

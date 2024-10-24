@@ -24,6 +24,10 @@ export const TaskDescription = ({
         mutate({
             json: { description: value },
             param: { taskId: task.$id }
+        }, {
+            onSuccess: () => {
+                setIsEditing(false);
+            }
         });
     }
 

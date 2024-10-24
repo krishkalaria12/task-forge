@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-
 import { InferRequestType, InferResponseType } from "hono";
 import { toast } from "sonner";
 
@@ -12,7 +10,6 @@ type RequestType = InferRequestType<typeof client.api.projects[":projectId"]["$d
 
 export const useDeleteProject = () => {
     const queryClient = useQueryClient();
-    const router = useRouter();
 
     const mutation = useMutation<
         ResponseType,
@@ -30,7 +27,6 @@ export const useDeleteProject = () => {
         },
         onSuccess: ({ data }) => {
             toast.success("Project deleted");
-            router.refresh();
             queryClient.invalidateQueries({ queryKey: ["projects"] });
             queryClient.invalidateQueries({ queryKey: ["project", data.$id] });
         },

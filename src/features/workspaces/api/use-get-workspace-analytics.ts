@@ -13,7 +13,7 @@ export const useGetWorkspaceAnalytics = ({
     workspaceId
 }: useGetWorkspaceAnalyticsProps) => {
     const query = useQuery({
-        queryKey: ["workspace", workspaceId],
+        queryKey: ["workspace-analytics", workspaceId],
         queryFn: async () => {
             const response = await client.api.workspaces[":workspaceId"]["analytics"].$get({ param: { workspaceId } });
 

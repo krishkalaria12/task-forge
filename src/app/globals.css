@@ -112,3 +112,7 @@ body {
     align-items: center;
   }
 }
+
+.navbar {
+  @apply flex-col hidden lg:flex
+}

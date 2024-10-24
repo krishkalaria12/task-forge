@@ -31,7 +31,7 @@ export const Navbar = () => {
 
     return (
         <nav className="pt-4 px-6 flex items-center justify-between">
-            <div className="flex-col hidden lg:flex">
+            <div className="navbar">
                 <h1 className="text-2xl font-semibold">{title}</h1>
                 <p className="text-muted-foreground">
                     {description}
